@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var camera = get_viewport().get_camera_2d()
+@onready var game_manager = get_node("/root/Main")
 
 var screen_bounds: Rect2
 
@@ -12,8 +13,9 @@ func _ready():
 	update_screen_bounds()
 
 func _physics_process(delta):
-	handle_movement(delta)
-	restrict_to_screen_bounds()
+	if game_manager and game_manager.is_playing():
+		handle_movement(delta)
+		restrict_to_screen_bounds()
 
 func handle_movement(delta):
 	var direction = Vector2.ZERO

@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8yay2n3k4m6q"]
+
+[ext_resource type="Script" path="res://scripts/ring_menu.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://bqx8y2n3k4m5p" path="res://scenes/menu_item.tscn" id="2_menu_item"]
+
+[node name="RingMenu" type="Node2D"]
+script = ExtResource("1_script")
+menu_item_scene = ExtResource("2_menu_item") 

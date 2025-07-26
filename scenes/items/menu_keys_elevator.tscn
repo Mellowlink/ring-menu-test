@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bow0x7upg67f0"]
+
+[ext_resource type="Texture2D" uid="uid://bwo7pbwao7q20" path="res://assets/keys.png" id="1_b6k5o"]
+
+[node name="MenuKeySprite" type="Sprite2D"]
+texture = ExtResource("1_b6k5o")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
