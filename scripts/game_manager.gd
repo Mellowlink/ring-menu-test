@@ -17,6 +17,8 @@ func _ready():
 	# Add menu items
 	if ring_menu:
 		setup_all_menu_items()
+	
+	# Don't set process mode to always - let it pause normally
 
 func _input(event):
 	if Input.is_action_just_pressed("menu"):
@@ -28,63 +30,100 @@ func toggle_menu_state():
 	else:
 		set_game_state(GameState.PLAYING)
 
-
-func add_animated_menu_item(item_name: String, sprite_frames: SpriteFrames, animation_name: String = "default"):
-	# Create animated sprite manually
-	var animated_sprite = AnimatedSprite2D.new()
-	animated_sprite.sprite_frames = sprite_frames
-	animated_sprite.animation = animation_name
-	animated_sprite.play()
-	
-	# Add to ring menu
-	ring_menu.add_item(item_name, null, animated_sprite)
-
-func setup_animated_items():
-	# Example: Add an animated item
-	var music_sprite_frames = preload("res://assets/music.png")  # You'd need to create SpriteFrames
-	add_animated_menu_item("Music", music_sprite_frames, "idle")
-
 func add_sprite_from_scene(scene_path: String, item_name: String, category: String):
 	# Load sprite from editor-created scene
 	var scene = load(scene_path)
 	var instance = scene.instantiate()
-	var sprite = instance.get_node("Sprite2D")
 	
-	ring_menu.add_item_to_category(category, item_name, sprite.texture, null)
+	# The root node is the Sprite2D, so we don't need to get a child
+	var sprite = instance
+	
+	if sprite and sprite.texture:
+		# Create a new texture with the same region settings
+		var new_texture = sprite.texture
+		if sprite.region_enabled:
+			# Create a new texture with the region applied
+			var atlas_texture = AtlasTexture.new()
+			atlas_texture.atlas = sprite.texture
+			atlas_texture.region = sprite.region_rect
+			new_texture = atlas_texture
+		
+		ring_menu.add_item_to_category(category, item_name, new_texture, null)
+	
 	instance.queue_free()
 
-func add_animated_from_scene(scene_path: String, item_name: String, category: String):
+func add_animated_from_scene(scene_path: String, item_name: String, category: String, animation: String = "red"):
 	# Load animated sprite from editor-created scene
 	var scene = load(scene_path)
 	var instance = scene.instantiate()
-	var animated_sprite = instance.get_node("AnimatedSprite2D")
+	
+	# The root node is the AnimatedSprite2D, so we don't need to get a child
+	var animated_sprite = instance
+	
+	# Set the specific animation
+	animated_sprite.animation = animation
+	animated_sprite.play()
 	
 	ring_menu.add_item_to_category(category, item_name, null, animated_sprite)
-	instance.queue_free()
+	# Don't queue_free the instance since we're using the animated_sprite
 
 func setup_all_menu_items():
 	# Clear existing items
 	ring_menu.clear_all_categories()
 	
-	# Add items category
-	add_sprite_from_scene("res://scenes/menu_items_sprites.tscn", "Sword", "Items")
-	add_sprite_from_scene("res://scenes/menu_items_sprites.tscn", "Shield", "Items") 
-	add_sprite_from_scene("res://scenes/menu_items_sprites.tscn", "Potion", "Items")
+	# Add items category (12 items)
+	var item_scenes = [
+		"res://scenes/items/menu_items_mushroom.tscn",
+		"res://scenes/items/menu_items_apple.tscn",
+		"res://scenes/items/menu_items_flower.tscn",
+		"res://scenes/items/menu_items_teapot.tscn",
+		"res://scenes/items/menu_items_stone.tscn",
+		"res://scenes/items/menu_items_necklace.tscn",
+		"res://scenes/items/menu_items_dust.tscn",
+		"res://scenes/items/menu_items_ring.tscn",
+		"res://scenes/items/menu_items_will.tscn",
+		"res://scenes/items/menu_items_journal.tscn",
+		"res://scenes/items/menu_items_letter.tscn",
+		"res://scenes/items/menu_items_scroll.tscn"
+	]
 	
-	# Add keys category
-	add_sprite_from_scene("res://scenes/menu_keys_sprites.tscn", "Key", "Keys")
+	var item_names = [
+		"Mushroom Drops", "Apple", "Gorgon Flower", "Teapot", "Purification Stone", "Necklace",
+		"Magic Dust", "Crystal Ring", "Will", "Father's Journal", "Letter from Lola", "Lance's Letter"
+	]
 	
-	# Add music category
-	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Red Note", "Music")
-	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Blue Note", "Music")
-	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Green Note", "Music")
-	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Yellow Note", "Music")
+	for i in range(item_scenes.size()):
+		add_sprite_from_scene(item_scenes[i], item_names[i], "Items")
+	
+	# Add keys category (4 keys)
+	var key_scenes = [
+		"res://scenes/items/menu_keys_prison.tscn",
+		"res://scenes/items/menu_keys_elevator.tscn",
+		"res://scenes/items/menu_keys_minea.tscn",
+		"res://scenes/items/menu_keys_mineb.tscn"
+	]
+	
+	var key_names = ["Prison Key", "Elevator Key", "Mine A Key", "Mine B Key"]
+	
+	for i in range(key_scenes.size()):
+		add_sprite_from_scene(key_scenes[i], key_names[i], "Keys")
+	
+	# Add music category with different animations
+	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Lola's Melody", "Music", "red")
+	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Melody of the Wind", "Music", "green")
+	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Memory Melody", "Music", "purple")
+	add_animated_from_scene("res://scenes/menu_music_animated.tscn", "Never Gonna Give You Up", "Music", "orange")
 
 func set_game_state(new_state: GameState):
 	if current_state != new_state:
 		current_state = new_state
 		game_state_changed.emit(new_state)
-		print("Game state changed to: ", GameState.keys()[new_state])
+		
+		# Handle pause based on state
+		if new_state == GameState.MENU:
+			get_tree().paused = true
+		elif new_state == GameState.PLAYING:
+			get_tree().paused = false
 
 func get_game_state() -> GameState:
 	return current_state
@@ -95,8 +134,4 @@ func is_playing() -> bool:
 func is_menu() -> bool:
 	return current_state == GameState.MENU
 
-func start_game():
-	set_game_state(GameState.PLAYING)
-
-func pause_to_menu():
-	set_game_state(GameState.MENU) 
+ 

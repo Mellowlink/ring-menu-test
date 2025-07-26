@@ -140,4 +140,4 @@ animations = [{
 [node name="MenuMusicAnimated" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_j34hy")
 animation = &"red"
-frame_progress = 0.60211
+frame_progress = 0.767092
