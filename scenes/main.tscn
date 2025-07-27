@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c72sh1aev0en5"]
+[gd_scene load_steps=12 format=3 uid="uid://c72sh1aev0en5"]
 
 [ext_resource type="PackedScene" uid="uid://tmyuuuplxowv" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bymfi5a4dx1dh" path="res://scripts/game_manager.gd" id="1_script"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cmj1rynkxerq0" path="res://assets/menu-open.mp3" id="7_85g3d"]
 [ext_resource type="AudioStream" uid="uid://3xtpssi3s14k" path="res://assets/menu-close.mp3" id="8_choun"]
 [ext_resource type="AudioStream" uid="uid://ckikayfaxugtd" path="res://assets/cursorblip_dwarf_sfx_ui.wav" id="9_ya4ey"]
+[ext_resource type="AudioStream" uid="uid://d2ey7usa2lmxi" path="res://assets/Illusion of Gaia OST #10 - Itory, The Hidden Village.mp3" id="10_choun"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tefeu"]
 font = ExtResource("5_tbgi4")
@@ -98,3 +99,10 @@ stream = ExtResource("8_choun")
 
 [node name="Cursor" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("9_ya4ey")
+
+[node name="Ongaku" type="AudioStreamPlayer" parent="Sounds"]
+process_mode = 3
+stream = ExtResource("10_choun")
+volume_db = -5.0
+autoplay = true
+parameters/looping = true

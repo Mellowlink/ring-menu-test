@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d2ey7usa2lmxi"
+path="res://.godot/imported/Illusion of Gaia OST #10 - Itory, The Hidden Village.mp3-c426402b7eabb5bbc5aa3e53cfd4012f.mp3str"
+
+[deps]
+
+source_file="res://assets/Illusion of Gaia OST #10 - Itory, The Hidden Village.mp3"
+dest_files=["res://.godot/imported/Illusion of Gaia OST #10 - Itory, The Hidden Village.mp3-c426402b7eabb5bbc5aa3e53cfd4012f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
