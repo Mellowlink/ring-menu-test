@@ -22,7 +22,10 @@ func _ready():
 
 func _input(event):
 	if Input.is_action_just_pressed("menu"):
-		toggle_menu_state()
+		# Only open the menu if it's not already open
+		if current_state == GameState.PLAYING:
+			toggle_menu_state()
+		# Do NOT toggle if already in MENU state
 
 func toggle_menu_state():
 	if current_state == GameState.PLAYING:
@@ -119,11 +122,31 @@ func set_game_state(new_state: GameState):
 		current_state = new_state
 		game_state_changed.emit(new_state)
 		
-		# Handle pause based on state
+		# Handle pause and dimming based on state
 		if new_state == GameState.MENU:
 			get_tree().paused = true
+			# Show dim overlay
+			var dim_overlay = get_node_or_null("UI/DimOverlay")
+			if dim_overlay:
+				dim_overlay.visible = true
+			# Move player above the dim overlay
+			var player = get_node_or_null("Player")
+			if player:
+				player.reparent(get_node("UI"))
+			# Play open sound
+			var open_sound = get_node_or_null("Sounds/Open")
+			if open_sound:
+				open_sound.play()
 		elif new_state == GameState.PLAYING:
 			get_tree().paused = false
+			# Hide dim overlay
+			var dim_overlay = get_node_or_null("UI/DimOverlay")
+			if dim_overlay:
+				dim_overlay.visible = false
+			# Move player back to main scene
+			var player = get_node_or_null("UI/Player")
+			if player:
+				player.reparent(self)
 
 func get_game_state() -> GameState:
 	return current_state

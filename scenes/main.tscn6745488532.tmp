@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c72sh1aev0en5"]
+
+[ext_resource type="PackedScene" uid="uid://tmyuuuplxowv" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://bymfi5a4dx1dh" path="res://scripts/game_manager.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://chp02g1qsbxjg" path="res://scenes/ring_menu.tscn" id="2_ring_menu"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(160, 90)
+
+[node name="Player" parent="." instance=ExtResource("1_o5qli")]
+position = Vector2(160, 89)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="RingMenu" parent="UI" instance=ExtResource("2_ring_menu")]
+radius = 40.0

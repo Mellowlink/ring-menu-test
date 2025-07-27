@@ -1,10 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://c72sh1aev0en5"]
+[gd_scene load_steps=11 format=3 uid="uid://c72sh1aev0en5"]
 
 [ext_resource type="PackedScene" uid="uid://tmyuuuplxowv" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bymfi5a4dx1dh" path="res://scripts/game_manager.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://chp02g1qsbxjg" path="res://scenes/ring_menu.tscn" id="2_ring_menu"]
 [ext_resource type="Texture2D" uid="uid://ciiu0ao3oabpd" path="res://assets/message-border.png" id="4_jyhfs"]
 [ext_resource type="FontFile" uid="uid://8npc4tjq565i" path="res://assets/final_fantasy_36_font.ttf" id="5_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://b6hlidn5bfhbb" path="res://assets/grass-bg-test.png" id="6_tefeu"]
+[ext_resource type="AudioStream" uid="uid://cmj1rynkxerq0" path="res://assets/menu-open.mp3" id="7_85g3d"]
+[ext_resource type="AudioStream" uid="uid://3xtpssi3s14k" path="res://assets/menu-close.mp3" id="8_choun"]
+[ext_resource type="AudioStream" uid="uid://ckikayfaxugtd" path="res://assets/cursorblip_dwarf_sfx_ui.wav" id="9_ya4ey"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tefeu"]
 font = ExtResource("5_tbgi4")
@@ -20,11 +24,24 @@ position = Vector2(160, 89)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
+[node name="DimOverlay" type="ColorRect" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -90.0
+offset_right = 160.0
+offset_bottom = 90.0
+color = Color(0, 0, 0, 0.5)
+
 [node name="RingMenu" parent="UI" instance=ExtResource("2_ring_menu")]
+z_index = 5
 radius = 40.0
 
 [node name="TopDesc" type="Sprite2D" parent="UI"]
 visible = false
+z_index = 10
 position = Vector2(160, 14)
 texture = ExtResource("4_jyhfs")
 
@@ -46,6 +63,7 @@ vertical_alignment = 1
 
 [node name="BottomDesc" type="Sprite2D" parent="UI"]
 visible = false
+z_index = 10
 position = Vector2(160, 166)
 texture = ExtResource("4_jyhfs")
 
@@ -64,3 +82,19 @@ offset_right = 111.0
 offset_bottom = 11.0
 label_settings = SubResource("LabelSettings_tefeu")
 vertical_alignment = 1
+
+[node name="BG" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(160, 90)
+texture = ExtResource("6_tefeu")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Open" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_85g3d")
+
+[node name="Close" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_choun")
+
+[node name="Cursor" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_ya4ey")
