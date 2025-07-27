@@ -4,7 +4,7 @@ Testing creation of a Secret of Mana/Evermore style ring menu in Godot.
 
 ![Ring Menu Demo](ring.gif)
 
-You can use this code, fork this code, use it in full or in part for anything you want. I don't own the graphical assets and you cannot use those commercially, now can you use the sound effects included. The code is my own and you can use it for whatever you want, messy bits and all.
+You can use this code, fork this code, use it in full or in part for anything you want. I don't own the graphical assets and you cannot use those commercially, nor can you use the sound effects included. The code is my own and you can use it for whatever you want, messy bits and all.
 
 ## Input Actions
 
